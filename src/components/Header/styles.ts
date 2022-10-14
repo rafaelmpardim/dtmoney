@@ -25,5 +25,9 @@ export const Content = styled.div`
     &:hover {
       filter: brightness(.9)
     }
+
+    &:active, &:focus {
+      outline: none
+    }
   }
 `
