@@ -1,11 +1,12 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react"
-import { api } from "../services/api"
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
+import { addDoc, collection, getDocs, Firestore } from 'firebase/firestore/lite'
+
+import { firebaseDb } from '../services/firebase'
 interface Transaction {
   amount: number
   category: string
   createdAt: string
-  id: number
   title: string
   type: string
 }
@@ -24,44 +25,53 @@ interface TransactionsContextData {
 const TransactionsContext = createContext<TransactionsContextData>({} as TransactionsContextData)
 
 export function TransactionsProvider({ children }: TransactionProviderProps) {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
+	const [transactions, setTransactions] = useState<Transaction[]>([])
 
-  useEffect(() => {
-    api.get('/transactions')
-    .then(response => setTransactions(sortTransactionsByCreatedAt(response.data.transactions)))
-  }, [])
+	async function getTransactions(db: Firestore) {
+		const transactionsCol = collection(db, 'transactions')
+		const transactionsSnapshot = await getDocs(transactionsCol)
+		const transactionsList = transactionsSnapshot.docs.map(doc => doc.data())
+		setTransactions(sortTransactionsByCreatedAt(transactionsList as Transaction[]))
+		
+		return transactionsList
+	}
 
-  async function createTransaction(transactionInput: TransactionInput) {
-    const response = await api.post('/transactions', {
-      ...transactionInput,
-      createdAt: new Date()
-    })
-    const { transaction } = response.data
+	useEffect(() => {
+		getTransactions(firebaseDb)
+	}, [])
 
-    setTransactions([
-      ...transactions,
-      transaction
-    ])
-  }
+	async function createTransaction(transactionInput: TransactionInput) {
+		const data = {
+			...transactionInput,
+			createdAt: new Intl.DateTimeFormat('pt-BR').format(new Date())
+		}
 
-  function sortTransactionsByCreatedAt(transactions: Transaction[]) {
-    const hatefulTransaction = transactions.sort((a, b) => {
-      if (a.createdAt > b.createdAt) { return 1 }
-      else if (a.createdAt < b.createdAt) { return -1}
-      else { return 0 }})
-      .reverse()
+		const response = await addDoc(collection(firebaseDb, 'transactions'), data)
 
-    return [...hatefulTransaction]
-  }
+		setTransactions(sortTransactionsByCreatedAt([
+			...transactions,
+			data
+		]))
+	}
+
+	function sortTransactionsByCreatedAt(transactions: Transaction[]) {
+		const hatefulTransaction = transactions.sort((a, b) => {
+			if (a.createdAt > b.createdAt) { return 1 }
+			else if (a.createdAt < b.createdAt) { return -1}
+			else { return 0 }})
+			.reverse()
+
+		return [...hatefulTransaction]
+	}
   
-  return (
-    <TransactionsContext.Provider value={{ transactions, createTransaction }}>
-      {children}
-    </TransactionsContext.Provider>
-  )
+	return (
+		<TransactionsContext.Provider value={{ transactions, createTransaction }}>
+			{children}
+		</TransactionsContext.Provider>
+	)
 }
 
 export function useTransactions() {
-  const context = useContext(TransactionsContext)
-  return context
+	const context = useContext(TransactionsContext)
+	return context
 }
