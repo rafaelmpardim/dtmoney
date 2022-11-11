@@ -1,13 +1,13 @@
-import { Summary } from "../Summary"
-import { TransactionTable } from "../TransactionTable"
+import { Summary } from '../Summary'
+import { TransactionTable } from '../TransactionTable'
 
-import { Containter } from "./styles"
+import { Containter } from './styles'
 
 export function Dashbord() {
-  return (
-    <Containter>
-      <Summary />
-      <TransactionTable />
-    </Containter>
-  )
+	return (
+		<Containter>
+			<Summary />
+			<TransactionTable />
+		</Containter>
+	)
 }

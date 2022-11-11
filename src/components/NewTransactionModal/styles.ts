@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 import { darken, transparentize } from 'polished'
 
@@ -29,22 +29,22 @@ export const Container = styled.form`
   }
 
   button[type="submit"] {
-      background: var(--green);
-      border: 0;
-      border-radius: .25rem;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      height: 4rem;
-      margin-top: 1.5rem;
-      padding: 0 1.5rem;
-      transition: filter .2s;
-      width: 100%;
+    background: var(--green);
+    border: 0;
+    border-radius: .25rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    height: 4rem;
+    margin-top: 1.5rem;
+    padding: 0 1.5rem;
+    transition: filter .2s;
+    width: 100%;
 
-      &:hover {
-        filter: brightness(.9)
-      }
+    &:hover {
+      filter: brightness(.9)
     }
+  }
 `
 
 export const NewTransactionTypeContainer = styled.div`
@@ -60,8 +60,8 @@ interface RadioBoxProps {
 }
 
 const colors = {
-  green: '#33CC95',
-  red: '#e52e4d'
+	green: '#33CC95',
+	red: '#e52e4d'
 }
 
 export const RadioBox = styled.button<RadioBoxProps>`

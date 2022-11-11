@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     --blue: #5429CC;
     --blue-light: #6933FF;
     --green: #33CC95;
-    --input-bg: #d7d7d7;
+    --input-bg: #e5e7eb;
     --input-border: #e7e9ee;
     --red: #E52E4D;
     --shape: #FFFFFF;
@@ -72,6 +72,10 @@ export const GlobalStyle = createGlobalStyle`
     padding: 3rem;
     position: relative;
     width: 100%;
+
+    @media (max-width: 768px) {
+      max-width: 95%;
+    }
   }
 
   .react-modal-close {
