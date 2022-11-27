@@ -5,6 +5,8 @@ import { Container } from './styles'
 export function TransactionTable() {
 	const { transactions } = useTransactions()
 
+	console.log(transactions)
+
 	if (transactions.length > 0) {
 		return (
 			<Container>
@@ -42,10 +44,10 @@ export function TransactionTable() {
 	} else {
 		return (
 			<Container>
-				<span>
+				<p>
 					Ainda não há lançamentos registrados. <br/>
 					Crie um agora mesmo!
-				</span>
+				</p>
 			</Container>
 		)
 	}

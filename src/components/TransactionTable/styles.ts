@@ -9,6 +9,10 @@ export const Container = styled.div`
     margin-bottom: 1rem;
   }
 
+  p {
+    text-align: center;
+  }
+
   table {
     border-spacing: 0 .5rem;
     width: 100%;

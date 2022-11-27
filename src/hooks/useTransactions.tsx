@@ -43,7 +43,7 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
 	async function createTransaction(transactionInput: TransactionInput) {
 		const data = {
 			...transactionInput,
-			createdAt: new Intl.DateTimeFormat('pt-BR').format(new Date())
+			createdAt: new Date().toString()
 		}
 
 		const response = await addDoc(collection(firebaseDb, 'transactions'), data)
